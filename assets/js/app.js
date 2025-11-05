@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const languageContainer = document.getElementById("languageContainer");
   const languageDisplay = document.getElementById("languageDisplay");
   const addLanguageBtn = document.getElementById("addLanguageBtn");
+  const certificateContainer = document.getElementById("certificateContainer");
+  const certificateDisplay = document.getElementById("certificateDisplay");
+  const addCertificateBtn = document.getElementById("addCertificateBtn");
   const cvForm = document.getElementById("cvForm");
 
   const validationRules = {
@@ -79,6 +82,109 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     return isOverallValid;
+  }
+
+  function createCertificateBlock() {
+    const lastBlock = certificateContainer.querySelector(
+      ".certificate-block:last-child"
+    );
+
+    if (
+      lastBlock &&
+      !validateBlock(
+        "certificateContainer",
+        "certificate-block",
+        null,
+        false,
+        lastBlock
+      )
+    ) {
+      return;
+    }
+
+    if (lastBlock) {
+      saveAndDisplayCertificate(lastBlock);
+    }
+
+    const newBlock = document.createElement("div");
+    newBlock.className = "bg-gray-50 p-4 rounded relative certificate-block";
+    newBlock.innerHTML = `
+      <input
+        type="text"
+        name="cert_name[]"
+        placeholder="Certificate Name (e.g., AWS Certified Developer)"
+        class="w-full mb-2 p-2 border rounded cert_name"
+        required
+      />
+      <input
+        type="text"
+        name="cert_issuer[]"
+        placeholder="Issuing Organization (e.g., Coursera, Microsoft)"
+        class="w-full mb-2 p-2 border rounded cert_issuer"
+        required
+      />
+
+      <div class="flex gap-4">
+        <div class="flex-1">
+          <label class="block text-sm">Issue Date</label>
+          <input
+            type="date"
+            name="cert_date[]"
+            class="w-full p-2 border rounded cert_date"
+            required
+          />
+        </div>
+        <div class="flex-1">
+          <label class="block text-sm">URL (Optional)</label>
+          <input
+            type="url"
+            name="cert_url[]"
+            placeholder="Certificate link"
+            class="w-full p-2 border rounded cert_url"
+          />
+        </div>
+      </div>
+
+    `;
+
+    certificateContainer.appendChild(newBlock);
+    newBlock.querySelector(".cert_name").focus();
+  }
+
+  function saveAndDisplayCertificate(blockToSave) {
+    const name = blockToSave.querySelector(".cert_name").value;
+    const issuer = blockToSave.querySelector(".cert_issuer").value;
+    const date = blockToSave.querySelector(".cert_date").value;
+    const url = blockToSave.querySelector(".cert_url").value;
+
+    const formattedDate = new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+    });
+
+    const displayDiv = document.createElement("div");
+    displayDiv.className =
+      "p-4 border-l-4 border-amber-500 bg-amber-50 relative saved-certificate-block";
+
+    displayDiv.innerHTML = `
+        <div class="font-bold text-lg text-amber-800">${name}</div>
+        <div class="text-sm text-gray-600">${issuer} (${formattedDate})</div>
+        ${
+          url
+            ? `<div class="text-xs mt-1"><a href="${url}" target="_blank" class="text-amber-700 hover:underline">View Credential</a></div>`
+            : ""
+        }
+        <button type="button" class="removeCertDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
+        
+        <input type="hidden" name="saved_cert_name[]" value="${name}">
+        <input type="hidden" name="saved_cert_issuer[]" value="${issuer}">
+        <input type="hidden" name="saved_cert_date[]" value="${date}">
+        <input type="hidden" name="saved_cert_url[]" value="${url}">
+    `;
+
+    certificateDisplay.appendChild(displayDiv);
+
+    blockToSave.remove();
   }
 
   function createLanguageBlock() {
@@ -306,6 +412,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  addCertificateBtn.addEventListener("click", createCertificateBlock);
+
+  certificateContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("removeCertBtn")) {
+      e.target.closest(".certificate-block").remove();
+    }
+  });
+
+  certificateDisplay.addEventListener("click", (e) => {
+    if (e.target.classList.contains("removeCertDisplayBtn")) {
+      e.target.closest(".saved-certificate-block").remove();
+    }
+  });
+
   addLanguageBtn.addEventListener("click", createLanguageBlock);
 
   languageContainer.addEventListener("click", (e) => {
@@ -317,25 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
   languageDisplay.addEventListener("click", (e) => {
     if (e.target.classList.contains("removeLangDisplayBtn")) {
       e.target.closest(".saved-language-block").remove();
-    }
-  });
-
-  languageContainer.addEventListener("input", (e) => {
-    const input = e.target;
-    if (
-      (input.hasAttribute("required") || input.tagName === "SELECT") &&
-      input.closest(".language-block")
-    ) {
-      if (
-        input.value.trim() === "" ||
-        (input.tagName === "SELECT" && input.value === "")
-      ) {
-        input.classList.remove("border-green-500");
-        input.classList.add("border-red-500");
-      } else {
-        input.classList.remove("border-red-500");
-        input.classList.add("border-green-500");
-      }
     }
   });
 
@@ -369,19 +470,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  educationContainer.addEventListener("input", (e) => {
-    const input = e.target;
-    if (input.hasAttribute("required") && input.closest(".education-block")) {
-      if (input.value.trim() === "") {
-        input.classList.remove("border-green-500");
-        input.classList.add("border-red-500");
-      } else {
-        input.classList.remove("border-red-500");
-        input.classList.add("border-green-500");
-      }
-    }
-  });
-
   experienceContainer.addEventListener("change", (e) => {
     if (e.target.classList.contains("currentExpCheckbox")) {
       const toInput = e.target
@@ -394,19 +482,6 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (!toInput.disabled && toInput.value === "") {
         toInput.classList.remove("border-green-500");
         toInput.classList.add("border-red-500");
-      }
-    }
-  });
-
-  experienceContainer.addEventListener("input", (e) => {
-    const input = e.target;
-    if (input.hasAttribute("required") && input.closest(".experience-block")) {
-      if (input.value.trim() === "") {
-        input.classList.remove("border-green-500");
-        input.classList.add("border-red-500");
-      } else {
-        input.classList.remove("border-red-500");
-        input.classList.add("border-green-500");
       }
     }
   });
@@ -505,6 +580,26 @@ document.addEventListener("DOMContentLoaded", () => {
         isFormValid = false;
       } else {
         saveAndDisplayLanguage(lastLangBlock);
+      }
+    }
+
+    const lastCertBlock = certificateContainer.querySelector(
+      ".certificate-block:last-child"
+    );
+
+    if (lastCertBlock) {
+      if (
+        !validateBlock(
+          "certificateContainer",
+          "certificate-block",
+          null,
+          false,
+          lastCertBlock
+        )
+      ) {
+        isFormValid = false;
+      } else {
+        saveAndDisplayCertificate(lastCertBlock);
       }
     }
 

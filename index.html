@@ -229,6 +229,10 @@
                   <option value="Professional Working Proficiency">
                     Professional Working Proficiency
                   </option>
+                  <option value="Limited Working Proficiency">
+                    Limited Working Proficiency
+                  </option>
+                  <option value="Elementary Proficiency">Elementary</option>
                 </select>
               </div>
             </div>
@@ -240,6 +244,59 @@
           class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           + Add Language
+        </button>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4">Certificates</h2>
+
+        <div id="certificateDisplay" class="space-y-3 mb-6"></div>
+
+        <div id="certificateContainer" class="space-y-4">
+          <div class="bg-gray-50 p-4 rounded relative certificate-block">
+            <input
+              type="text"
+              name="cert_name[]"
+              placeholder="Certificate Name (e.g., AWS Certified Developer)"
+              class="w-full mb-2 p-2 border rounded cert_name"
+              required
+            />
+            <input
+              type="text"
+              name="cert_issuer[]"
+              placeholder="Issuing Organization (e.g., Coursera, Microsoft)"
+              class="w-full mb-2 p-2 border rounded cert_issuer"
+              required
+            />
+
+            <div class="flex gap-4">
+              <div class="flex-1">
+                <label class="block text-sm">Issue Date</label>
+                <input
+                  type="date"
+                  name="cert_date[]"
+                  class="w-full p-2 border rounded cert_date"
+                  required
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-sm">URL (Optional)</label>
+                <input
+                  type="url"
+                  name="cert_url[]"
+                  placeholder="Certificate link"
+                  class="w-full p-2 border rounded cert_url"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          id="addCertificateBtn"
+          type="button"
+          class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          + Add Certificate
         </button>
       </section>
 
