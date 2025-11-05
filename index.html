@@ -1,72 +1,148 @@
-<html>
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>CV Builder</title>
-      <link rel="stylesheet" href="src/output.css" />
-      <script src="assets/js/app.js" defer></script>
-    </head>
-    <body class="bg-gray-100 min-h-screen p-6">
-      <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
-        <h1 class="text-2xl font-bold mb-6">CV Builder</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CV Builder</title>
+    <link rel="stylesheet" href="src/output.css" />
+    <script src="assets/js/app.js" defer></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen p-6">
+    <form id="cvForm" class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+      <h1 class="text-2xl font-bold mb-6">CV Builder</h1>
 
-        <section class="mb-10">
-          <h2 class="text-xl font-semibold mb-4">Education</h2>
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4">Personal Information</h2>
 
-          <div id="educationContainer" class="space-y-4">
-            <div class="bg-gray-50 p-4 rounded relative education-block">
-              <input
-                type="text"
-                name="edu_title[]"
-                placeholder="e.g. BSc in Computer Science"
-                class="w-full mb-2 p-2 border rounded"
-                required
-              />
-
-              <div class="flex gap-4">
-                <div class="flex-1">
-                  <label class="block text-sm">From</label>
-                  <input
-                    type="date"
-                    name="edu_from[]"
-                    class="w-full p-2 border rounded"
-                    required
-                  />
-                </div>
-                <div class="flex-1">
-                  <label class="block text-sm">To</label>
-                  <input
-                    type="date"
-                    name="edu_to[]"
-                    class="w-full p-2 border rounded"
-                    required
-                  />
-                </div>
-              </div>
-
-              <label class="inline-flex items-center mt-2">
-                <input type="checkbox" class="currentCheckbox mr-2" /> Current
-              </label>
-
-              <button
-                type="button"
-                class="removeBtn absolute top-1 right-1 bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full hover:bg-red-700"
-              >
-                ✕
-              </button>
-            </div>
+        <div class="space-y-4 bg-white p-4 rounded shadow-sm">
+          <div>
+            <label
+              for="fullName"
+              class="block text-sm font-medium text-gray-700"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              placeholder="Your Full Name"
+              class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+            <p id="fullNameError" class="text-red-500 text-xs mt-1 hidden"></p>
           </div>
-          <button
-            id="addExperienceBtn"
-            type="button"
-            class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-          >
-            + Add Experience
-          </button>
-        </section>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="example@gmail.com"
+              class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+            <p id="emailError" class="text-red-500 text-xs mt-1 hidden"></p>
+          </div>
+
+          <div>
+            <label for="phone" class="block text-sm font-medium text-gray-700"
+              >Phone Number</label
+            >
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="06 XX XX XX XX or 07 XX XX XX XX"
+              class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+            <p id="phoneError" class="text-red-500 text-xs mt-1 hidden"></p>
+          </div>
+
+          <div>
+            <label
+              for="linkedin"
+              class="block text-sm font-medium text-gray-700"
+              >LinkedIn URL (Optional)</label
+            >
+            <input
+              type="url"
+              id="linkedin"
+              name="linkedin"
+              placeholder="https://linkedin.com/in/username"
+              class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+            />
+            <p id="linkedinError" class="text-red-500 text-xs mt-1 hidden"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4">Education</h2>
+
+        <div id="educationContainer" class="space-y-4">
+          <div class="bg-gray-50 p-4 rounded relative education-block">
+            <input
+              type="text"
+              name="edu_title[]"
+              placeholder="e.g. BSc in Computer Science"
+              class="w-full mb-2 p-2 border rounded"
+              required
+            />
+
+            <div class="flex gap-4">
+              <div class="flex-1">
+                <label class="block text-sm">From</label>
+                <input
+                  type="date"
+                  name="edu_from[]"
+                  class="w-full p-2 border rounded"
+                  required
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-sm">To</label>
+                <input
+                  type="date"
+                  name="edu_to[]"
+                  class="w-full p-2 border rounded"
+                  required
+                />
+              </div>
+            </div>
+
+            <label class="inline-flex items-center mt-2">
+              <input type="checkbox" class="currentCheckbox mr-2" /> Current
+            </label>
+
+            <button
+              type="button"
+              class="removeBtn absolute top-1 right-1 bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full hover:bg-red-700 education-block"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+        <button
+          id="addExperienceBtn"
+          type="button"
+          class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          + Add Experience
+        </button>
+      </section>
+
+      <div class="mt-8 pt-4 border-t border-gray-200">
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-700 transition duration-150"
+        >
+          Generate CV
+        </button>
       </div>
-    </body>
-  </html>
+    </form>
+  </body>
 </html>
