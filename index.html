@@ -1,12 +1,23 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("educationContainer");
-  const addBtn = document.getElementById("addExperienceBtn");
+<html>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>CV Builder</title>
+      <link rel="stylesheet" href="src/output.css" />
+      <script src="assets/js/app.js" defer></script>
+    </head>
+    <body class="bg-gray-100 min-h-screen p-6">
+      <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
+        <h1 class="text-2xl font-bold mb-6">CV Builder</h1>
 
-  function createEducationBlock() {
-    const div = document.createElement("div");
-    div.className = "bg-gray-50 p-4 rounded relative";
-    div.innerHTML = `
-      <input
+        <section class="mb-10">
+          <h2 class="text-xl font-semibold mb-4">Education</h2>
+
+          <div id="educationContainer" class="space-y-4">
+            <div class="bg-gray-50 p-4 rounded relative education-block">
+              <input
                 type="text"
                 name="edu_title[]"
                 placeholder="e.g. BSc in Computer Science"
@@ -45,30 +56,17 @@ document.addEventListener("DOMContentLoaded", () => {
               >
                 ✕
               </button>
-    `;
-    return div;
-  }
-
-  addBtn.addEventListener("click", () => {
-    const newBlock = createEducationBlock();
-    container.appendChild(newBlock);
-  });
-
-  container.addEventListener("click", (e) => {
-    if (e.target.classList.contains("removeBtn")) {
-      e.target.parentElement.remove();
-    }
-  });
-
-  container.addEventListener("change", (e) => {
-    if (e.target.classList.contains("currentCheckbox")) {
-      const toInput = e.target
-        .closest(".bg-gray-50")
-        .querySelector('input[name="edu_to[]"]');
-      toInput.disabled = e.target.checked;
-      if (e.target.checked) {
-        toInput.value = "";
-      }
-    }
-  });
-});
+            </div>
+          </div>
+          <button
+            id="addExperienceBtn"
+            type="button"
+            class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          >
+            + Add Experience
+          </button>
+        </section>
+      </div>
+    </body>
+  </html>
+</html>
