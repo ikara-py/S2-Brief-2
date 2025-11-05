@@ -40,7 +40,7 @@
               type="email"
               id="email"
               name="email"
-              placeholder="example@gmail.com"
+              placeholder="example@domain.com"
               class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
               required
             />
@@ -83,13 +83,15 @@
       <section class="mb-10">
         <h2 class="text-xl font-semibold mb-4">Education</h2>
 
+        <div id="educationDisplay" class="space-y-3 mb-6"></div>
+
         <div id="educationContainer" class="space-y-4">
           <div class="bg-gray-50 p-4 rounded relative education-block">
             <input
               type="text"
               name="edu_title[]"
               placeholder="e.g. BSc in Computer Science"
-              class="w-full mb-2 p-2 border rounded"
+              class="w-full mb-2 p-2 border rounded edu_title"
               required
             />
 
@@ -99,7 +101,7 @@
                 <input
                   type="date"
                   name="edu_from[]"
-                  class="w-full p-2 border rounded"
+                  class="w-full p-2 border rounded edu_from"
                   required
                 />
               </div>
@@ -108,30 +110,136 @@
                 <input
                   type="date"
                   name="edu_to[]"
-                  class="w-full p-2 border rounded"
+                  class="w-full p-2 border rounded edu_to"
                   required
                 />
               </div>
             </div>
 
             <label class="inline-flex items-center mt-2">
-              <input type="checkbox" class="currentCheckbox mr-2" /> Current
+              <input type="checkbox" class="currentCheckbox mr-2 edu_current" />
+              Current
+            </label>
+          </div>
+        </div>
+        <button
+          id="addEducationBtn"
+          type="button"
+          class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          + Add Education
+        </button>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4">Work Experience</h2>
+
+        <div id="experienceDisplay" class="space-y-3 mb-6"></div>
+
+        <div id="experienceContainer" class="space-y-4">
+          <div class="bg-gray-50 p-4 rounded relative experience-block">
+            <input
+              type="text"
+              name="exp_title[]"
+              placeholder="Job Title (e.g., Software Engineer)"
+              class="w-full mb-2 p-2 border rounded exp_title"
+              required
+            />
+            <input
+              type="text"
+              name="exp_company[]"
+              placeholder="Company Name"
+              class="w-full mb-2 p-2 border rounded exp_company"
+              required
+            />
+
+            <div class="flex gap-4 mb-2">
+              <div class="flex-1">
+                <label class="block text-sm">From</label>
+                <input
+                  type="date"
+                  name="exp_from[]"
+                  class="w-full p-2 border rounded exp_from"
+                  required
+                />
+              </div>
+              <div class="flex-1">
+                <label class="block text-sm">To</label>
+                <input
+                  type="date"
+                  name="exp_to[]"
+                  class="w-full p-2 border rounded exp_to"
+                  required
+                />
+              </div>
+            </div>
+
+            <label class="inline-flex items-center mt-2">
+              <input
+                type="checkbox"
+                class="currentExpCheckbox mr-2 exp_current"
+              />
+              Current Job
             </label>
 
-            <button
-              type="button"
-              class="removeBtn absolute top-1 right-1 bg-red-600 text-white w-6 h-6 flex items-center justify-center rounded-full hover:bg-red-700 education-block"
-            >
-              ✕
-            </button>
+            <textarea
+              name="exp_description[]"
+              placeholder="Job description and achievements (1-2 sentences)"
+              class="w-full mt-2 p-2 border rounded exp_description"
+              rows="2"
+              required
+            ></textarea>
           </div>
         </div>
         <button
           id="addExperienceBtn"
           type="button"
+          class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          + Add Work Experience
+        </button>
+      </section>
+
+      <section class="mb-10">
+        <h2 class="text-xl font-semibold mb-4">Languages</h2>
+
+        <div id="languageDisplay" class="space-y-3 mb-6"></div>
+
+        <div id="languageContainer" class="space-y-4">
+          <div class="bg-gray-50 p-4 rounded relative language-block">
+            <div class="flex gap-4">
+              <div class="flex-1">
+                <input
+                  type="text"
+                  name="lang_name[]"
+                  placeholder="Language (e.g., French)"
+                  class="w-full p-2 border rounded lang_name"
+                  required
+                />
+              </div>
+              <div class="flex-1">
+                <select
+                  name="lang_level[]"
+                  class="w-full p-2 border rounded lang_level bg-white"
+                  required
+                >
+                  <option value="" disabled selected>Select Level</option>
+                  <option value="Native">Native</option>
+                  <option value="Fluent">Fluent</option>
+                  <option value="Professional Working Proficiency">
+                    Professional Working Proficiency
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          id="addLanguageBtn"
+          type="button"
           class="mt-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
-          + Add Experience
+          + Add Language
         </button>
       </section>
 
