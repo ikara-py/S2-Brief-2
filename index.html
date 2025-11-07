@@ -11,9 +11,8 @@
     <form id="cvForm" class="max-w-3xl mx-auto bg-white p-6 rounded shadow">
       <h1 class="text-2xl font-bold mb-6">CV Builder</h1>
 
-      <section class="mb-10">
-        
-        <div class="space-y-4 bg-white p-4 rounded shadow-sm">
+      <section class="mb-10 bg-white p-4 rounded shadow-sm">
+        <div class="space-y-4 ">
           <h2 class="text-xl font-semibold mb-4">Personal Information</h2>
           <div>
             <label
@@ -95,7 +94,7 @@
               required
             />
 
-            <div class="flex gap-4">
+            <div class="flex gap-4 sm:gridhn">
               <div class="flex-1">
                 <label class="block text-sm">From</label>
                 <input
@@ -142,14 +141,14 @@
               type="text"
               name="exp_title[]"
               placeholder="Job Title (e.g., Software Engineer)"
-              class="w-full mb-2 p-2 border rounded exp_title"
+              class="w-full mb-2 p-2 border border-gray-300 rounded exp_title"
               required
             />
             <input
               type="text"
               name="exp_company[]"
               placeholder="Company Name"
-              class="w-full mb-2 p-2 border rounded exp_company"
+              class="w-full mb-2 p-2 border border-gray-300 rounded exp_company"
               required
             />
 
@@ -159,7 +158,7 @@
                 <input
                   type="date"
                   name="exp_from[]"
-                  class="w-full p-2 border rounded exp_from"
+                  class="w-full p-2 border border-gray-300 rounded exp_from"
                   required
                 />
               </div>
@@ -168,7 +167,7 @@
                 <input
                   type="date"
                   name="exp_to[]"
-                  class="w-full p-2 border rounded exp_to"
+                  class="w-full p-2 border border-gray-300 rounded exp_to"
                   required
                 />
               </div>
@@ -177,7 +176,7 @@
             <label class="inline-flex items-center mt-2">
               <input
                 type="checkbox"
-                class="currentExpCheckbox mr-2 exp_current"
+                class="currentExpCheckbox border-gray-300 mr-2 exp_current"
               />
               Current Job
             </label>
@@ -185,7 +184,7 @@
             <textarea
               name="exp_description[]"
               placeholder="Job description and achievements (1-2 sentences)"
-              class="w-full mt-2 p-2 border rounded exp_description"
+              class="w-full mt-2 p-2 border border-gray-300 rounded exp_description"
               rows="2"
               required
             ></textarea>
@@ -319,7 +318,8 @@
         </div>
         <button
           type="submit"
-          class="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-700 transition duration-150"
+          id="generateCvBtn"
+          class="hidden w-full bg-blue-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-blue-700 transition duration-150"
         >
           Generate CV
         </button>

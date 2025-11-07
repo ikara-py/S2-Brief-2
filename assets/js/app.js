@@ -12,6 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const certificateDisplay = document.getElementById("certificateDisplay");
   const addCertificateBtn = document.getElementById("addCertificateBtn");
   const cvForm = document.getElementById("cvForm");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const form = document.getElementById("cvForm");
+  const sections = form.querySelectorAll("section");
+  const submitBtn = document.getElementById("generateCvBtn");
 
   const validationRules = {
     fullName: {
@@ -36,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
     containerId,
     blockClass,
     currentCheckboxClass,
-    checkAll = false,
     blockToValidate = null
   ) {
     const container = document.getElementById(containerId);
@@ -45,8 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const blocksToCheck = blockToValidate
       ? [blockToValidate]
-      : checkAll
-      ? blocks
       : [blocks[blocks.length - 1]];
     let isOverallValid = true;
 
@@ -65,10 +67,11 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        if (
+        const isEmpty =
           input.value.trim() === "" ||
-          (input.tagName === "SELECT" && input.value === "")
-        ) {
+          (input.tagName === "SELECT" && input.value === "");
+
+        if (isEmpty) {
           input.classList.remove("border-green-500");
           input.classList.add("border-red-500");
           isValid = false;
@@ -84,69 +87,70 @@ document.addEventListener("DOMContentLoaded", () => {
     return isOverallValid;
   }
 
-  function createCertificateBlock() {
-    const lastBlock = certificateContainer.querySelector(
-      ".certificate-block:last-child"
-    );
-
-    if (
-      lastBlock &&
-      !validateBlock(
-        "certificateContainer",
-        "certificate-block",
-        null,
-        false,
-        lastBlock
-      )
-    ) {
-      return;
-    }
+  function manageDynamicBlock(
+    container,
+    blockClass,
+    saveFunction,
+    createFunction,
+    checkboxClass = null
+  ) {
+    const lastBlock = container.querySelector(`.${blockClass}:last-child`);
 
     if (lastBlock) {
-      saveAndDisplayCertificate(lastBlock);
+      if (!validateBlock(container.id, blockClass, checkboxClass, lastBlock)) {
+        return false;
+      }
+      saveFunction(lastBlock);
     }
 
+    if (createFunction) {
+      createFunction();
+    }
+
+    return true;
+  }
+
+  function createCertificateBlock() {
     const newBlock = document.createElement("div");
     newBlock.className = "bg-gray-50 p-4 rounded relative certificate-block";
     newBlock.innerHTML = `
-      <input
-        type="text"
-        name="cert_name[]"
-        placeholder="Certificate Name (e.g., AWS Certified Developer)"
-        class="w-full mb-2 p-2 border rounded cert_name"
-        required
-      />
-      <input
-        type="text"
-        name="cert_issuer[]"
-        placeholder="Issuing Organization (e.g., Coursera, Microsoft)"
-        class="w-full mb-2 p-2 border rounded cert_issuer"
-        required
-      />
+            <input
+                type="text"
+                name="cert_name[]"
+                placeholder="Certificate Name (e.g., AWS Certified Developer)"
+                class="w-full mb-2 p-2 border rounded cert_name"
+                required
+            />
+            <input
+                type="text"
+                name="cert_issuer[]"
+                placeholder="Issuing Organization (e.g., Coursera, Microsoft)"
+                class="w-full mb-2 p-2 border rounded cert_issuer"
+                required
+            />
 
-      <div class="flex gap-4">
-        <div class="flex-1">
-          <label class="block text-sm">Issue Date</label>
-          <input
-            type="date"
-            name="cert_date[]"
-            class="w-full p-2 border rounded cert_date"
-            required
-          />
-        </div>
-        <div class="flex-1">
-          <label class="block text-sm">URL (Optional)</label>
-          <input
-            type="url"
-            name="cert_url[]"
-            placeholder="Certificate link"
-            class="w-full p-2 border rounded cert_url"
-          />
-        </div>
-      </div>
-
-    `;
-
+            <div class="flex gap-4">
+                <div class="flex-1">
+                    <label class="block text-sm">Issue Date</label>
+                    <input
+                        type="date"
+                        name="cert_date[]"
+                        class="w-full p-2 border rounded cert_date"
+                        required
+                    />
+                </div>
+                <div class="flex-1">
+                    <label class="block text-sm">URL (Optional)</label>
+                    <input
+                        type="url"
+                        name="cert_url[]"
+                        placeholder="Certificate link"
+                        class="w-full p-2 border rounded cert_url"
+                    />
+                </div>
+            </div>
+            <button type="button" class="removeCertBtn absolute top-1 right-1 bg-gray-300 text-gray-700 w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-gray-400">✕</button>
+        `;
     certificateContainer.appendChild(newBlock);
     newBlock.querySelector(".cert_name").focus();
   }
@@ -167,84 +171,61 @@ document.addEventListener("DOMContentLoaded", () => {
       "p-4 border-l-4 border-amber-500 bg-amber-50 relative saved-certificate-block";
 
     displayDiv.innerHTML = `
-        <div class="font-bold text-lg text-amber-800">${name}</div>
-        <div class="text-sm text-gray-600">${issuer} (${formattedDate})</div>
-        ${
-          url
-            ? `<div class="text-xs mt-1"><a href="${url}" target="_blank" class="text-amber-700 hover:underline">View Credential</a></div>`
-            : ""
-        }
-        <button type="button" class="removeCertDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
-        
-        <input type="hidden" name="saved_cert_name[]" value="${name}">
-        <input type="hidden" name="saved_cert_issuer[]" value="${issuer}">
-        <input type="hidden" name="saved_cert_date[]" value="${date}">
-        <input type="hidden" name="saved_cert_url[]" value="${url}">
-    `;
-
+            <div class="font-bold text-lg text-amber-800">${name}</div>
+            <div class="text-sm text-gray-600">${issuer} (${formattedDate})</div>
+            ${
+              url
+                ? `<div class="text-xs mt-1"><a href="${url}" target="_blank" class="text-amber-700 hover:underline">View Credential</a></div>`
+                : ""
+            }
+            <button type="button" class="removeCertDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
+            
+            <input type="hidden" name="saved_cert_name[]" value="${name}">
+            <input type="hidden" name="saved_cert_issuer[]" value="${issuer}">
+            <input type="hidden" name="saved_cert_date[]" value="${date}">
+            <input type="hidden" name="saved_cert_url[]" value="${url}">
+        `;
     certificateDisplay.appendChild(displayDiv);
-
     blockToSave.remove();
   }
 
   function createLanguageBlock() {
-    const lastBlock = languageContainer.querySelector(
-      ".language-block:last-child"
-    );
-
-    if (
-      lastBlock &&
-      !validateBlock(
-        "languageContainer",
-        "language-block",
-        null,
-        false,
-        lastBlock
-      )
-    ) {
-      return;
-    }
-
-    if (lastBlock) {
-      saveAndDisplayLanguage(lastBlock);
-    }
-
     const newBlock = document.createElement("div");
     newBlock.className = "bg-gray-50 p-4 rounded relative language-block";
     newBlock.innerHTML = `
-      <div class="flex gap-4">
-        <div class="flex-1">
-          <input
-            type="text"
-            name="lang_name[]"
-            placeholder="Language (e.g., French)"
-            class="w-full p-2 border rounded lang_name"
-            required
-          />
-        </div>
-        <div class="flex-1">
-          <select
-            name="lang_level[]"
-            class="w-full p-2 border rounded lang_level bg-white"
-            required
-          >
-            <option value="" disabled selected>Select Level</option>
-            <option value="Native">Native</option>
-            <option value="Fluent">Fluent</option>
-            <option value="Professional Working Proficiency">
-              Professional Working Proficiency
-            </option>
-            <option value="Limited Working Proficiency">
-              Limited Working Proficiency
-            </option>
-            <option value="Elementary Proficiency">
-              Elementary Proficiency
-            </option>
-          </select>
-        </div>
-      </div>
-    `;
-
+            <div class="flex gap-4">
+                <div class="flex-1">
+                    <input
+                        type="text"
+                        name="lang_name[]"
+                        placeholder="Language (e.g., French)"
+                        class="w-full p-2 border rounded lang_name"
+                        required
+                    />
+                </div>
+                <div class="flex-1">
+                    <select
+                        name="lang_level[]"
+                        class="w-full p-2 border rounded lang_level bg-white"
+                        required
+                    >
+                        <option value="" disabled selected>Select Level</option>
+                        <option value="Native">Native</option>
+                        <option value="Fluent">Fluent</option>
+                        <option value="Professional Working Proficiency">
+                            Professional Working Proficiency
+                        </option>
+                        <option value="Limited Working Proficiency">
+                            Limited Working Proficiency
+                        </option>
+                        <option value="Elementary Proficiency">
+                            Elementary Proficiency
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="removeLangBtn absolute top-1 right-1 bg-gray-300 text-gray-700 w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-gray-400">✕</button>
+        `;
     languageContainer.appendChild(newBlock);
     newBlock.querySelector(".lang_name").focus();
   }
@@ -261,14 +242,13 @@ document.addEventListener("DOMContentLoaded", () => {
       "p-4 border-l-4 border-teal-500 bg-teal-50 relative saved-language-block";
 
     displayDiv.innerHTML = `
-        <div class="font-bold text-lg text-teal-800">${name}</div>
-        <div class="text-sm text-gray-600">${levelText}</div>
-        <button type="button" class="removeLangDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
-        
-        <input type="hidden" name="saved_lang_name[]" value="${name}">
-        <input type="hidden" name="saved_lang_level[]" value="${level}">
-    `;
-
+            <div class="font-bold text-lg text-teal-800">${name}</div>
+            <div class="text-sm text-gray-600">${levelText}</div>
+            <button type="button" class="removeLangDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
+            
+            <input type="hidden" name="saved_lang_name[]" value="${name}">
+            <input type="hidden" name="saved_lang_level[]" value="${level}">
+        `;
     languageDisplay.appendChild(displayDiv);
     blockToSave.remove();
   }
@@ -282,7 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "educationContainer",
         "education-block",
         "currentCheckbox",
-        false,
         blockToSave
       )
     ) {
@@ -314,16 +293,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     displayDiv.innerHTML = `
-          <div class="font-bold text-lg text-blue-800">${title}</div>
-          <div class="text-sm text-gray-600">${formattedFrom} - ${formattedTo}</div>
-          <button type="button" class="removeDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
-          
-          <input type="hidden" name="saved_edu_title[]" value="${title}">
-          <input type="hidden" name="saved_edu_from[]" value="${fromDate}">
-          <input type="hidden" name="saved_edu_to[]" value="${
-            isCurrent ? "Current" : toDateInput.value
-          }">
-    `;
+                <div class="font-bold text-lg text-blue-800">${title}</div>
+                <div class="text-sm text-gray-600">${formattedFrom} - ${formattedTo}</div>
+                <button type="button" class="removeDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
+                
+                <input type="hidden" name="saved_edu_title[]" value="${title}">
+                <input type="hidden" name="saved_edu_from[]" value="${fromDate}">
+                <input type="hidden" name="saved_edu_to[]" value="${
+                  isCurrent ? "Current" : toDateInput.value
+                }">
+        `;
 
     educationDisplay.appendChild(displayDiv);
 
@@ -347,7 +326,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "experienceContainer",
         "experience-block",
         "currentExpCheckbox",
-        false,
         blockToSave
       )
     ) {
@@ -381,21 +359,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     displayDiv.innerHTML = `
-          <div class="font-bold text-lg text-purple-800">${title} at ${company}</div>
-          <div class="text-sm text-gray-600 mb-1">${formattedFrom} - ${formattedTo}</div>
-          <ul class="list-disc list-inside text-sm text-gray-700 ml-4">
-            <li>${description}</li>
-          </ul>
-          <button type="button" class="removeExpDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
-          
-          <input type="hidden" name="saved_exp_title[]" value="${title}">
-          <input type="hidden" name="saved_exp_company[]" value="${company}">
-          <input type="hidden" name="saved_exp_from[]" value="${fromDate}">
-          <input type="hidden" name="saved_exp_to[]" value="${
-            isCurrent ? "Current" : toDateInput.value
-          }">
-          <input type="hidden" name="saved_exp_description[]" value="${description}">
-    `;
+                <div class="font-bold text-lg text-purple-800">${title} at ${company}</div>
+                <div class="text-sm text-gray-600 mb-1">${formattedFrom} - ${formattedTo}</div>
+                <ul class="list-disc list-inside text-sm text-gray-700 ml-4">
+                    <li>${description}</li>
+                </ul>
+                <button type="button" class="removeExpDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
+                
+                <input type="hidden" name="saved_exp_title[]" value="${title}">
+                <input type="hidden" name="saved_exp_company[]" value="${company}">
+                <input type="hidden" name="saved_exp_from[]" value="${fromDate}">
+                <input type="hidden" name="saved_exp_to[]" value="${
+                  isCurrent ? "Current" : toDateInput.value
+                }">
+                <input type="hidden" name="saved_exp_description[]" value="${description}">
+        `;
 
     experienceDisplay.appendChild(displayDiv);
 
@@ -412,7 +390,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  addCertificateBtn.addEventListener("click", createCertificateBlock);
+  addCertificateBtn.addEventListener("click", () => {
+    manageDynamicBlock(
+      certificateContainer,
+      "certificate-block",
+      saveAndDisplayCertificate,
+      createCertificateBlock
+    );
+  });
 
   certificateContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("removeCertBtn")) {
@@ -426,7 +411,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  addLanguageBtn.addEventListener("click", createLanguageBlock);
+  addLanguageBtn.addEventListener("click", () => {
+    manageDynamicBlock(
+      languageContainer,
+      "language-block",
+      saveAndDisplayLanguage,
+      createLanguageBlock
+    );
+  });
 
   languageContainer.addEventListener("click", (e) => {
     if (e.target.classList.contains("removeLangBtn")) {
@@ -543,12 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (
-      !validateBlock(
-        "educationContainer",
-        "education-block",
-        "currentCheckbox",
-        false
-      )
+      !validateBlock("educationContainer", "education-block", "currentCheckbox")
     ) {
       isFormValid = false;
     }
@@ -557,54 +544,91 @@ document.addEventListener("DOMContentLoaded", () => {
       !validateBlock(
         "experienceContainer",
         "experience-block",
-        "currentExpCheckbox",
-        false
+        "currentExpCheckbox"
       )
     ) {
       isFormValid = false;
     }
 
-    const lastLangBlock = languageContainer.querySelector(
-      ".language-block:last-child"
-    );
-    if (lastLangBlock) {
-      if (
-        !validateBlock(
-          "languageContainer",
-          "language-block",
-          null,
-          false,
-          lastLangBlock
-        )
-      ) {
-        isFormValid = false;
-      } else {
-        saveAndDisplayLanguage(lastLangBlock);
-      }
+    if (
+      !manageDynamicBlock(
+        languageContainer,
+        "language-block",
+        saveAndDisplayLanguage,
+        null
+      )
+    ) {
+      isFormValid = false;
     }
 
-    const lastCertBlock = certificateContainer.querySelector(
-      ".certificate-block:last-child"
-    );
-
-    if (lastCertBlock) {
-      if (
-        !validateBlock(
-          "certificateContainer",
-          "certificate-block",
-          null,
-          false,
-          lastCertBlock
-        )
-      ) {
-        isFormValid = false;
-      } else {
-        saveAndDisplayCertificate(lastCertBlock);
-      }
+    if (
+      !manageDynamicBlock(
+        certificateContainer,
+        "certificate-block",
+        saveAndDisplayCertificate,
+        null
+      )
+    ) {
+      isFormValid = false;
     }
 
     if (!isFormValid) {
       e.preventDefault();
     }
   });
+
+  let currentStep = 0;
+
+  function updateUI() {
+    console.log("Current Step:", currentStep);
+
+    sections.forEach((section, index) => {
+      if (index === currentStep) {
+        section.classList.remove("hidden");
+      } else {
+        section.classList.add("hidden");
+      }
+    });
+
+    if (currentStep === 0) {
+      prevBtn.disabled = true;
+    } else {
+      prevBtn.disabled = false;
+    }
+
+    const lastStepIndex = sections.length - 1;
+
+    if (currentStep === lastStepIndex) {
+      nextBtn.classList.add("hidden");
+      submitBtn.classList.remove("hidden");
+
+      console.log("test 1");
+    } else if (currentStep === 0) {
+      console.log("test 2");
+      prevBtn.classList.add("hidden");
+    } else {
+      nextBtn.classList.remove("hidden");
+      prevBtn.classList.remove("hidden");
+      submitBtn.classList.add("hidden");
+    }
+  }
+
+  function nextStep() {
+    if (currentStep < sections.length - 1) {
+      currentStep++;
+      updateUI();
+    }
+  }
+
+  function prevStep() {
+    if (currentStep > 0) {
+      currentStep--;
+      updateUI();
+    }
+  }
+
+  nextBtn.addEventListener("click", nextStep);
+  prevBtn.addEventListener("click", prevStep);
+
+  updateUI();
 });
