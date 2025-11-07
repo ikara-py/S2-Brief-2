@@ -12,9 +12,9 @@
       <h1 class="text-2xl font-bold mb-6">CV Builder</h1>
 
       <section class="mb-10">
-        <h2 class="text-xl font-semibold mb-4">Personal Information</h2>
-
+        
         <div class="space-y-4 bg-white p-4 rounded shadow-sm">
+          <h2 class="text-xl font-semibold mb-4">Personal Information</h2>
           <div>
             <label
               for="fullName"
@@ -80,7 +80,7 @@
         </div>
       </section>
 
-      <section class="mb-10">
+      <section class="hidden mb-10 space-y-4 bg-white p-4 rounded shadow-sm">
         <h2 class="text-xl font-semibold mb-4">Education</h2>
 
         <div id="educationDisplay" class="space-y-3 mb-6"></div>
@@ -91,7 +91,7 @@
               type="text"
               name="edu_title[]"
               placeholder="e.g. BSc in Computer Science"
-              class="w-full mb-2 p-2 border rounded edu_title"
+              class="w-full mb-2 p-2 border border-gray-300 rounded edu_title"
               required
             />
 
@@ -101,7 +101,7 @@
                 <input
                   type="date"
                   name="edu_from[]"
-                  class="w-full p-2 border rounded edu_from"
+                  class="w-full p-2 border border-gray-300 rounded edu_from"
                   required
                 />
               </div>
@@ -110,7 +110,7 @@
                 <input
                   type="date"
                   name="edu_to[]"
-                  class="w-full p-2 border rounded edu_to"
+                  class="w-full p-2 border border-gray-300 rounded edu_to"
                   required
                 />
               </div>
@@ -131,7 +131,7 @@
         </button>
       </section>
 
-      <section class="mb-10">
+      <section class="hidden mb-10 space-y-4 bg-white p-4 rounded shadow-sm">
         <h2 class="text-xl font-semibold mb-4">Work Experience</h2>
 
         <div id="experienceDisplay" class="space-y-3 mb-6"></div>
@@ -200,7 +200,7 @@
         </button>
       </section>
 
-      <section class="mb-10">
+      <section class="hidden mb-10 space-y-4 bg-white p-4 rounded shadow-sm">
         <h2 class="text-xl font-semibold mb-4">Languages</h2>
 
         <div id="languageDisplay" class="space-y-3 mb-6"></div>
@@ -213,14 +213,14 @@
                   type="text"
                   name="lang_name[]"
                   placeholder="Language (e.g., French)"
-                  class="w-full p-2 border rounded lang_name"
+                  class="w-full p-2 border border-gray-300 rounded lang_name"
                   required
                 />
               </div>
               <div class="flex-1">
                 <select
                   name="lang_level[]"
-                  class="w-full p-2 border rounded lang_level bg-white"
+                  class="w-full p-2 border border-gray-300 rounded lang_level bg-white"
                   required
                 >
                   <option value="" disabled selected>Select Level</option>
@@ -247,25 +247,25 @@
         </button>
       </section>
 
-      <section class="mb-10">
+      <section class="hidden mb-10 space-y-4 bg-white p-4 rounded shadow-sm">
         <h2 class="text-xl font-semibold mb-4">Certificates</h2>
 
         <div id="certificateDisplay" class="space-y-3 mb-6"></div>
 
         <div id="certificateContainer" class="space-y-4">
-          <div class="bg-gray-50 p-4 rounded relative certificate-block">
+          <div class="bg-gray-50 rounded relative certificate-block">
             <input
               type="text"
               name="cert_name[]"
               placeholder="Certificate Name (e.g., AWS Certified Developer)"
-              class="w-full mb-2 p-2 border rounded cert_name"
+              class="w-full mb-2 p-2 border border-gray-300 rounded cert_name"
               required
             />
             <input
               type="text"
               name="cert_issuer[]"
               placeholder="Issuing Organization (e.g., Coursera, Microsoft)"
-              class="w-full mb-2 p-2 border rounded cert_issuer"
+              class="w-full mb-2 p-2 border border-gray-300 rounded cert_issuer"
               required
             />
 
@@ -275,7 +275,7 @@
                 <input
                   type="date"
                   name="cert_date[]"
-                  class="w-full p-2 border rounded cert_date"
+                  class="w-full p-2 border border-gray-300 rounded cert_date"
                   required
                 />
               </div>
@@ -285,7 +285,7 @@
                   type="url"
                   name="cert_url[]"
                   placeholder="Certificate link"
-                  class="w-full p-2 border rounded cert_url"
+                  class="w-full p-2 border border-gray-300 rounded cert_url"
                 />
               </div>
             </div>
