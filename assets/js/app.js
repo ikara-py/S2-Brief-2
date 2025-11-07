@@ -43,11 +43,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const blocks = container.querySelectorAll(`.${blockClass}`);
     if (blocks.length === 0) return true;
 
-    const blocksToCheck = blockToValidate
-      ? [blockToValidate]
-      : checkAll
-      ? blocks
-      : [blocks[blocks.length - 1]];
+    let blocksToCheck;
+    if (blockToValidate) {
+      blocksToCheck = [blockToValidate];
+    } else if (checkAll) {
+      blocksToCheck = blocks;
+    } else {
+      blocksToCheck = [blocks[blocks.length - 1]];
+    }
+
     let isOverallValid = true;
 
     blocksToCheck.forEach((block) => {
@@ -55,12 +59,12 @@ document.addEventListener("DOMContentLoaded", () => {
       let isValid = true;
 
       requiredInputs.forEach((input) => {
-        const isToDate =
-          input.type === "date" &&
-          (input.name === "edu_to[]" || input.name === "exp_to[]");
         const currentCheckbox = block.querySelector(`.${currentCheckboxClass}`);
+        const isToDateInput =
+          input.type === "date" &&
+          (input.name.includes("to") || input.name.includes("To"));
 
-        if (isToDate && currentCheckbox && currentCheckbox.checked) {
+        if (isToDateInput && currentCheckbox && currentCheckbox.checked) {
           input.classList.remove("border-red-500", "border-green-500");
           return;
         }
@@ -77,10 +81,12 @@ document.addEventListener("DOMContentLoaded", () => {
           input.classList.add("border-green-500");
         }
       });
+
       if (!isValid) {
         isOverallValid = false;
       }
     });
+
     return isOverallValid;
   }
 
@@ -109,43 +115,44 @@ document.addEventListener("DOMContentLoaded", () => {
     const newBlock = document.createElement("div");
     newBlock.className = "bg-gray-50 p-4 rounded relative certificate-block";
     newBlock.innerHTML = `
-      <input
-        type="text"
-        name="cert_name[]"
-        placeholder="Certificate Name (e.g., AWS Certified Developer)"
-        class="w-full mb-2 p-2 border rounded cert_name"
-        required
-      />
-      <input
-        type="text"
-        name="cert_issuer[]"
-        placeholder="Issuing Organization (e.g., Coursera, Microsoft)"
-        class="w-full mb-2 p-2 border rounded cert_issuer"
-        required
-      />
-
-      <div class="flex gap-4">
-        <div class="flex-1">
-          <label class="block text-sm">Issue Date</label>
-          <input
-            type="date"
-            name="cert_date[]"
-            class="w-full p-2 border rounded cert_date"
-            required
-          />
-        </div>
-        <div class="flex-1">
-          <label class="block text-sm">URL (Optional)</label>
-          <input
-            type="url"
-            name="cert_url[]"
-            placeholder="Certificate link"
-            class="w-full p-2 border rounded cert_url"
-          />
-        </div>
+    <input
+      type="text"
+      name="cert_name[]"
+      placeholder="Certificate Name (e.g., AWS Certified Developer)"
+      class="w-full mb-2 p-2 border rounded cert_name"
+      required
+    />
+    
+    <input
+      type="text"
+      name="cert_issuer[]"
+      placeholder="Issuing Organization (e.g., Coursera, Microsoft)"
+      class="w-full mb-2 p-2 border rounded cert_issuer"
+      required
+    />
+    
+    <div class="flex gap-4">
+      <div class="flex-1">
+        <label class="block text-sm">Issue Date</label>
+        <input
+          type="date"
+          name="cert_date[]"
+          class="w-full p-2 border rounded cert_date"
+          required
+        />
       </div>
-
-    `;
+      
+      <div class="flex-1">
+        <label class="block text-sm">URL (Optional)</label>
+        <input
+          type="url"
+          name="cert_url[]"
+          placeholder="Certificate link"
+          class="w-full p-2 border rounded cert_url"
+        />
+      </div>
+    </div>
+  `;
 
     certificateContainer.appendChild(newBlock);
     newBlock.querySelector(".cert_name").focus();
@@ -167,21 +174,25 @@ document.addEventListener("DOMContentLoaded", () => {
       "p-4 border-l-4 border-amber-500 bg-amber-50 relative saved-certificate-block";
 
     displayDiv.innerHTML = `
-        <div class="font-bold text-lg text-amber-800">${name}</div>
-        <div class="text-sm text-gray-600">${issuer} (${formattedDate})</div>
-        ${
-          url
-            ? `<div class="text-xs mt-1"><a href="${url}" target="_blank" class="text-amber-700 hover:underline">View Credential</a></div>`
-            : ""
-        }
-        <button type="button" class="removeCertDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">✕</button>
-        
-        <input type="hidden" name="saved_cert_name[]" value="${name}">
-        <input type="hidden" name="saved_cert_issuer[]" value="${issuer}">
-        <input type="hidden" name="saved_cert_date[]" value="${date}">
-        <input type="hidden" name="saved_cert_url[]" value="${url}">
-    `;
-
+    <div class="font-bold text-lg text-amber-800">${name}</div>
+    <div class="text-sm text-gray-600">${issuer} (${formattedDate})</div>
+    ${
+      url
+        ? `<div class="text-xs mt-1">
+             <a href="${url}" target="_blank" class="text-amber-700 hover:underline">
+               View Credential
+             </a>
+           </div>`
+        : ""
+    }
+    <button type="button" class="removeCertDisplayBtn absolute top-1 right-1 bg-red-500 text-white w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-red-600">
+      ✕
+    </button>
+    <input type="hidden" name="saved_cert_name[]" value="${name}">
+    <input type="hidden" name="saved_cert_issuer[]" value="${issuer}">
+    <input type="hidden" name="saved_cert_date[]" value="${date}">
+    <input type="hidden" name="saved_cert_url[]" value="${url}">
+  `;
     certificateDisplay.appendChild(displayDiv);
 
     blockToSave.remove();
@@ -414,25 +425,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addCertificateBtn.addEventListener("click", createCertificateBlock);
 
-  certificateContainer.addEventListener("click", (e) => {
-    if (e.target.classList.contains("removeCertBtn")) {
-      e.target.closest(".certificate-block").remove();
-    }
-  });
-
   certificateDisplay.addEventListener("click", (e) => {
     if (e.target.classList.contains("removeCertDisplayBtn")) {
+      // console.log("test")
       e.target.closest(".saved-certificate-block").remove();
     }
   });
 
   addLanguageBtn.addEventListener("click", createLanguageBlock);
-
-  languageContainer.addEventListener("click", (e) => {
-    if (e.target.classList.contains("removeLangBtn")) {
-      e.target.closest(".language-block").remove();
-    }
-  });
 
   languageDisplay.addEventListener("click", (e) => {
     if (e.target.classList.contains("removeLangDisplayBtn")) {
