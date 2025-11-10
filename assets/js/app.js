@@ -515,18 +515,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   cvForm.addEventListener("submit", (e) => {
-    let isFormValid = true;
-
     personalInfoInputs.forEach((input) => {
       if (!validateInput(input)) {
-        isFormValid = false;
+        e.preventDefault();
       }
     });
 
     if (
       !validateBlock("educationContainer", "education-block", "currentCheckbox")
     ) {
-      isFormValid = false;
+      e.preventDefault();
     }
 
     if (
@@ -536,7 +534,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "currentExpCheckbox"
       )
     ) {
-      isFormValid = false;
+      e.preventDefault();
     }
 
     if (
@@ -547,7 +545,7 @@ document.addEventListener("DOMContentLoaded", () => {
         null
       )
     ) {
-      isFormValid = false;
+      e.preventDefault();
     }
 
     if (
@@ -558,10 +556,6 @@ document.addEventListener("DOMContentLoaded", () => {
         null
       )
     ) {
-      isFormValid = false;
-    }
-
-    if (!isFormValid) {
       e.preventDefault();
     }
   });
