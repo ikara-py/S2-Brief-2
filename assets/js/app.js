@@ -473,30 +473,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function validateInput(input) {
     const rules = validationRules[input.id];
+
+    console.log( input.id);
+
     const errorElement = document.getElementById(`${input.id}Error`);
     const value = input.value.trim();
 
-    if (!rules) return true;
+    if (!rules) {
+        return true;
+    }
 
     if (!input.hasAttribute("required") && value === "") {
-      errorElement.classList.add("hidden");
-      input.classList.remove("border-red-500", "border-green-500");
-      return true;
+        errorElement.classList.add("hidden");
+        input.classList.remove("border-red-500", "border-green-500");
+        return true;
+    }
+    
+    if (input.hasAttribute("required") && value === "") {
+
+      console.log("Required field is empty");
+      
+        errorElement.textContent = "This field is required.";
+        errorElement.classList.remove("hidden");
+        input.classList.remove("border-green-500");
+        input.classList.add("border-red-500");
+        return false;
     }
 
     if (rules.regex.test(value)) {
-      errorElement.classList.add("hidden");
-      input.classList.remove("border-red-500");
-      input.classList.add("border-green-500");
-      return true;
-    } else {
-      errorElement.textContent = rules.error;
-      errorElement.classList.remove("hidden");
-      input.classList.remove("border-green-500");
-      input.classList.add("border-red-500");
-      return false;
+        errorElement.classList.add("hidden");
+        input.classList.remove("border-red-500");
+        input.classList.add("border-green-500");
+        return true;
+    } 
+    
+    else {
+        errorElement.textContent = rules.error;
+        errorElement.classList.remove("hidden");
+        input.classList.remove("border-green-500");
+        input.classList.add("border-red-500");
+        return false;
     }
-  }
+}
 
   personalInfoInputs.forEach((input) => {
     input.addEventListener("blur", () => {
