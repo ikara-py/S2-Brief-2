@@ -39,54 +39,41 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  function validateBlock(
-    containerId,
-    blockClass,
-    currentCheckboxClass,
-    blockToValidate = null
-  ) {
+  function validateBlock(containerId, blockClass, checkboxClass) {
     const container = document.getElementById(containerId);
     const blocks = container.querySelectorAll(`.${blockClass}`);
     if (blocks.length === 0) return true;
 
-    const blocksToCheck = blockToValidate
-      ? [blockToValidate]
-      : [blocks[blocks.length - 1]];
-    let isOverallValid = true;
+    const lastBlock = blocks[blocks.length - 1];
+    const requiredInputs = lastBlock.querySelectorAll("[required]");
+    let isValid = true;
 
-    blocksToCheck.forEach((block) => {
-      const requiredInputs = block.querySelectorAll("[required]");
-      let isValid = true;
+    requiredInputs.forEach((input) => {
+      const currentCheckbox = lastBlock.querySelector(`.${checkboxClass}`);
+      const isToDate =
+        input.type === "date" &&
+        (input.name === "edu_to[]" || input.name === "exp_to[]");
 
-      requiredInputs.forEach((input) => {
-        const isToDate =
-          input.type === "date" &&
-          (input.name === "edu_to[]" || input.name === "exp_to[]");
-        const currentCheckbox = block.querySelector(`.${currentCheckboxClass}`);
+      if (isToDate && currentCheckbox && currentCheckbox.checked) {
+        input.classList.remove("border-red-500", "border-green-500");
+        return;
+      }
 
-        if (isToDate && currentCheckbox && currentCheckbox.checked) {
-          input.classList.remove("border-red-500", "border-green-500");
-          return;
-        }
+      const isEmpty =
+        input.value.trim() === "" ||
+        (input.tagName === "SELECT" && input.value === "");
 
-        const isEmpty =
-          input.value.trim() === "" ||
-          (input.tagName === "SELECT" && input.value === "");
-
-        if (isEmpty) {
-          input.classList.remove("border-green-500");
-          input.classList.add("border-red-500");
-          isValid = false;
-        } else {
-          input.classList.remove("border-red-500");
-          input.classList.add("border-green-500");
-        }
-      });
-      if (!isValid) {
-        isOverallValid = false;
+      if (isEmpty) {
+        input.classList.remove("border-green-500");
+        input.classList.add("border-red-500");
+        isValid = false;
+      } else {
+        input.classList.remove("border-red-500");
+        input.classList.add("border-green-500");
       }
     });
-    return isOverallValid;
+
+    return isValid;
   }
 
   function manageDynamicBlock(
@@ -592,26 +579,19 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    if (currentStep === 0) {
-      prevBtn.disabled = true;
-    } else {
-      prevBtn.disabled = false;
-    }
-
     const lastStepIndex = sections.length - 1;
 
     if (currentStep === lastStepIndex) {
       nextBtn.classList.add("hidden");
       submitBtn.classList.remove("hidden");
-
-      console.log("test 1");
-    } else if (currentStep === 0) {
-      console.log("test 2");
-      prevBtn.classList.add("hidden");
     } else {
       nextBtn.classList.remove("hidden");
-      prevBtn.classList.remove("hidden");
       submitBtn.classList.add("hidden");
+    }
+    if (currentStep === 0) {
+      prevBtn.classList.add("hidden");
+    } else {
+      prevBtn.classList.remove("hidden");
     }
 
     changeNumStyle();
@@ -653,6 +633,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateUI();
 
   function changeNumStyle() {
+    console.log("just a test");
+
     steps.forEach((step, index) => {
       const circle = step.querySelector("div");
       const label = step.querySelector("span");
