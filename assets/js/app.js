@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("cvForm");
   const sections = form.querySelectorAll("section");
   const submitBtn = document.getElementById("generateCvBtn");
+  const progressFill = document.getElementById("progressFill");
+  const steps = document.querySelectorAll(".step");
 
   const validationRules = {
     fullName: {
@@ -611,12 +613,15 @@ document.addEventListener("DOMContentLoaded", () => {
       prevBtn.classList.remove("hidden");
       submitBtn.classList.add("hidden");
     }
+
+    changeNumStyle();
   }
 
   function nextStep() {
     if (currentStep < sections.length - 1) {
       currentStep++;
       updateUI();
+      progressBar();
     }
   }
 
@@ -624,6 +629,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentStep > 0) {
       currentStep--;
       updateUI();
+      progressBar();
+    }
+  }
+
+  function progressBar() {
+    if (currentStep === 0) {
+      progressFill.style.width = "20%";
+    } else if (currentStep === 1) {
+      progressFill.style.width = "40%";
+    } else if (currentStep === 2) {
+      progressFill.style.width = "60%";
+    } else if (currentStep === 3) {
+      progressFill.style.width = "80%";
+    } else if (currentStep === 4) {
+      progressFill.style.width = "100%";
     }
   }
 
@@ -631,4 +651,25 @@ document.addEventListener("DOMContentLoaded", () => {
   prevBtn.addEventListener("click", prevStep);
 
   updateUI();
+
+  function changeNumStyle() {
+    steps.forEach((step, index) => {
+      const circle = step.querySelector("div");
+      const label = step.querySelector("span");
+
+      if (index <= currentStep) {
+        circle.classList.remove("bg-white", "text-gray-600");
+        circle.classList.add("bg-blue-600", "text-white");
+
+        label.classList.remove("text-gray-500", "font-medium");
+        label.classList.add("text-blue-600", "font-bold");
+      } else {
+        circle.classList.remove("bg-blue-600", "text-white");
+        circle.classList.add("bg-white", "text-gray-600");
+
+        label.classList.remove("text-blue-600", "font-bold");
+        label.classList.add("text-gray-500", "font-medium");
+      }
+    });
+  }
 });
