@@ -638,14 +638,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function progressBar() {
     if (currentStep === 0) {
-      progressFill.style.width = "20%";
+      progressFill.style.width = "14.28%";
     } else if (currentStep === 1) {
-      progressFill.style.width = "40%";
+      progressFill.style.width = "28.56%";
     } else if (currentStep === 2) {
-      progressFill.style.width = "60%";
+      progressFill.style.width = "42.84%";
     } else if (currentStep === 3) {
-      progressFill.style.width = "80%";
+      progressFill.style.width = "57.12%";
     } else if (currentStep === 4) {
+      progressFill.style.width = "71.4%";
+    } else if (currentStep === 5) {
+      progressFill.style.width = "85.68%";
+    } else if (currentStep === 6) {
       progressFill.style.width = "100%";
     }
   }
