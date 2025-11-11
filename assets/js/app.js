@@ -19,20 +19,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("generateCvBtn");
   const progressFill = document.getElementById("progressFill");
   const steps = document.querySelectorAll(".step");
-  const switchModeBtn = document.getElementById("switchModeBtn");
-  ("switchModeBtn");
+  // const switchModeBtn = document.getElementById("switchModeBtn");
 
-  document.body.classList.add("bg-gray-100");
+  // document.body.classList.add("bg-gray-100");
 
-  switchModeBtn.addEventListener("click", () => {
-    if (document.body.classList.contains("bg-gray-100")) {
-      document.body.classList.remove("bg-gray-100");
-      document.body.classList.add("bg-cyan-950");
-    } else {
-      document.body.classList.remove("bg-cyan-950");
-      document.body.classList.add("bg-gray-100");
-    }
-  });
+  // switchModeBtn.addEventListener("click", () => {
+  //   if (document.body.classList.contains("bg-gray-100")) {
+  //     document.body.classList.remove("bg-gray-100");
+  //     document.body.classList.add("bg-cyan-950");
+  //   } else {
+  //     document.body.classList.remove("bg-cyan-950");
+  //     document.body.classList.add("bg-gray-100");
+  //   }
+  // });
 
   const validationRules = {
     fullName: {
