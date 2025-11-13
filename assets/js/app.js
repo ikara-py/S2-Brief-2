@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     console.log(personalInfo);
+    saveCvData();
   });
 
   //______________________________________________________________________________
@@ -67,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     languages.push(languageObj);
 
     console.log(languages);
+    saveCvData();
   });
 
   //______________________________________________________________________________
@@ -97,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     certificates.push(certificate);
 
     console.log(certificates);
+    saveCvData();
   });
 
   //______________________________________________________________________________
@@ -115,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     workExperiences.push({ jobTitle, company });
 
     console.log(workExperiences);
+    saveCvData();
   });
 
   //______________________________________________________________________________
@@ -127,7 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
     skillInput.value = "";
     skills.push(skill);
     console.log(skills);
+    saveCvData();
   });
+
   //______________________________________________________________________________
 
   const hobbies = [];
@@ -138,7 +144,27 @@ document.addEventListener("DOMContentLoaded", () => {
     hobbiesInput.value = "";
     hobbies.push(hobbie);
     console.log(hobbies);
+    saveCvData();
   });
+
+  //_______________________________________________________________________________
+
+  let cvData = {};
+
+  function saveCvData() {
+    cvData = {
+      personalInfo: personalInfo,
+      languages: languages,
+      certificates: certificates,
+      workExperiences: workExperiences,
+      skills: skills,
+      hobbies: hobbies,
+    };
+
+    const cvDataJson = JSON.stringify(cvData);
+    localStorage.setItem("cvData", cvDataJson);
+    console.log(cvData);
+  }
 
   //_______________________________________________________________________________
 
