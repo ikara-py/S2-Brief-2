@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressFill = document.getElementById("progressFill");
   const steps = document.querySelectorAll(".step");
   const savePersonalInfoBtn = document.getElementById("savePersonalInfoBtn");
+  const skillInput = document.getElementById("skillInput");
+  const addSkillBtn = document.getElementById("addSkillBtn");
 
   let personalInfo = {};
 
@@ -29,9 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = document.getElementById("phone").value.trim();
     const linkedin = document.getElementById("linkedin").value.trim();
 
-    if (!fullName || !email || !phone)
-      return;
-    
+    if (!fullName || !email || !phone) return;
+
     personalInfo = {
       fullName,
       email,
@@ -43,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   //______________________________________________________________________________
-
 
   const languages = [];
 
@@ -60,19 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
       level: level,
     };
 
-
-    if (!langNameInput || !langLevelSelect)
-      return;
-
+    if (!langNameInput || !langLevelSelect) return;
 
     languages.push(languageObj);
 
     console.log(languages);
   });
 
-
   //______________________________________________________________________________
-
 
   const certificates = [];
 
@@ -95,9 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       url: certUrl || null,
     };
 
-    if (!certNameInput || !certIssuerInput || !certDateInput)
-      return;
-
+    if (!certNameInput || !certIssuerInput || !certDateInput) return;
 
     certificates.push(certificate);
 
@@ -115,8 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const jobTitle = block.querySelector("[name='exp_title[]']").value.trim();
     const company = block.querySelector("[name='exp_company[]']").value.trim();
 
-    if (!jobTitle || !company)
-      return;
+    if (!jobTitle || !company) return;
 
     workExperiences.push({ jobTitle, company });
 
@@ -124,6 +116,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   //______________________________________________________________________________
+
+  const skills = [];
+  
+  addSkillBtn.addEventListener("click", () => {
+    const skill = skillInput.value.trim();
+    if (!skill) return;
+    skillInput.value = "";
+    skills.push(skill);
+    console.log(skills);
+  });
+
+  //_______________________________________________________________________________
 
   const validationRules = {
     fullName: {
