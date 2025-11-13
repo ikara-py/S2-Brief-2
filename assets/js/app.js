@@ -92,23 +92,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(languages);
     saveCvData();
-    updateCvLanguages()
+    updateCvLanguages();
   });
 
   //______________________________________________________________________________
 
-function updateCvLanguages() {
+  function updateCvLanguages() {
     const cvLanguagesDiv = document.getElementById("cvLanguages");
-    cvLanguagesDiv.innerHTML = ''; 
+    cvLanguagesDiv.innerHTML = "";
 
-    languages.forEach(langObj => {
-        const displayPara = document.createElement('p');
-        displayPara.className = 'text-gray-700';
-        displayPara.textContent = `${langObj.language} - ${langObj.level}`;
-        cvLanguagesDiv.appendChild(displayPara);
+    languages.forEach((langObj) => {
+      const displayPara = document.createElement("p");
+      displayPara.className = "text-gray-700";
+      displayPara.textContent = `${langObj.language} - ${langObj.level}`;
+      cvLanguagesDiv.appendChild(displayPara);
     });
-}
-
+  }
 
   //______________________________________________________________________________
 
@@ -158,7 +157,23 @@ function updateCvLanguages() {
 
     console.log(workExperiences);
     saveCvData();
+    updateCvWorkExperience();
   });
+
+  //______________________________________________________________________________
+
+  function updateCvWorkExperience() {
+    const cvWorkExperienceDiv = document.getElementById("cvWorkExperience");
+    cvWorkExperienceDiv.innerHTML = "";
+
+    workExperiences.forEach((exp) => {
+      const displayBlock = document.createElement("div");
+      displayBlock.className = "py-1";
+      displayBlock.innerHTML = `
+            <h5 class="font-bold text-lg text-gray-800">${exp.jobTitle}</h5>`;
+      cvWorkExperienceDiv.appendChild(displayBlock);
+    });
+  }
 
   //______________________________________________________________________________
 

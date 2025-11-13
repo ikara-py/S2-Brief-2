@@ -881,6 +881,9 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+  .whitespace-pre-wrap {
+    white-space: pre-wrap;
+  }
   .text-amber-700 {
     color: var(--color-amber-700);
   }
