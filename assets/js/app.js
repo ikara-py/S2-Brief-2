@@ -75,10 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
       regex: /^(06|07|05)\d{8}$/,
       error: "Phone number must be 10 digits and start with 05, 06, or 07.",
     },
-    linkedin: {
-      regex: /^(https?:\/\/)?(www\.)?linkedin\.com\/.*$/,
-      error: "Please enter a valid LinkedIn URL.",
-    },
   };
 
   function validateBlock(containerId, blockClass, checkboxClass) {
@@ -510,7 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const personalInfoInputs = document.querySelectorAll(
-    "#fullName, #email, #phone, #linkedin"
+    "#fullName, #email, #phone"
   );
 
   function validateInput(input) {
