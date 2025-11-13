@@ -33,6 +33,18 @@ document.addEventListener("DOMContentLoaded", () => {
   //   }
   // });
 
+
+
+  cvForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(cvForm);
+    // console.log(formData);
+    const entries = Object.fromEntries(formData);
+    const jsonData = JSON.stringify('cvForm',entries);
+    localStorage.setItem('cvForm', jsonData);
+    
+  });
+
   const validationRules = {
     fullName: {
       regex: /^[a-zA-Z\s]+$/,
@@ -487,7 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function validateInput(input) {
     const rules = validationRules[input.id];
 
-    console.log(input.id);
+    // console.log(input.id);
 
     const errorElement = document.getElementById(`${input.id}Error`);
     const value = input.value.trim();
@@ -503,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (input.hasAttribute("required") && value === "") {
-      console.log("Required field is empty");
+      // console.log("Required field is empty");
 
       errorElement.textContent = "This field is required.";
       errorElement.classList.remove("hidden");
@@ -591,7 +603,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentStep = 0;
 
   function updateUI() {
-    console.log("Current Step:", currentStep);
+    // console.log("Current Step:", currentStep);
 
     sections.forEach((section, index) => {
       if (index === currentStep) {
@@ -659,7 +671,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateUI();
 
   function changeNumStyle() {
-    console.log("just a test");
+    // console.log("just a test");
 
     steps.forEach((step, index) => {
       const circle = step.querySelector("div");
@@ -679,5 +691,13 @@ document.addEventListener("DOMContentLoaded", () => {
         label.classList.add("text-gray-500", "font-medium");
       }
     });
+  }
+
+  const savedData = {
+    personalInfo: {},
+    education: [],
+    experience: [],
+    languages: [],
+    certificates: [],
   }
 });
