@@ -40,6 +40,27 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(personalInfo);
   });
 
+
+  const languages = [];
+
+  addLanguageBtn.addEventListener("click", function () {
+    const langNameInput = document.querySelector("input[name='lang_name[]']");
+    const langLevelSelect = document.querySelector(
+      "select[name='lang_level[]']"
+    );
+
+    const language = langNameInput.value.trim();
+    const level = langLevelSelect.value;
+    const languageObj = {
+      language: language,
+      level: level,
+    };
+    languages.push(languageObj);
+
+    console.log(languages);
+
+  });
+
   // document.body.classList.add("bg-gray-100");
 
   // switchModeBtn.addEventListener("click", () => {
@@ -176,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     />
                 </div>
             </div>
-            <button type="button" class="removeCertBtn absolute top-1 right-1 bg-gray-300 text-gray-700 w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-gray-400">✕</button>
+            
         `;
     certificateContainer.appendChild(newBlock);
     newBlock.querySelector(".cert_name").focus();
@@ -251,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </select>
                 </div>
             </div>
-            <button type="button" class="removeLangBtn absolute top-1 right-1 bg-gray-300 text-gray-700 w-5 h-5 flex items-center justify-center rounded-full text-xs hover:bg-gray-400">✕</button>
+          
         `;
     languageContainer.appendChild(newBlock);
     newBlock.querySelector(".lang_name").focus();
@@ -706,11 +727,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const savedData = {
-    personalInfo: {},
-    education: [],
-    experience: [],
-    languages: [],
-    certificates: [],
-  };
+  // const savedData = {
+  //   personalInfo: {},
+  //   education: [],
+  //   experience: [],
+  //   languages: [],
+  //   certificates: [],
+  // };
 });
