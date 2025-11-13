@@ -44,7 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(personalInfo);
     saveCvData();
+
   });
+
+
 
   //______________________________________________________________________________
 
@@ -167,6 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //_______________________________________________________________________________
+
+  
 
   const validationRules = {
     fullName: {
@@ -811,12 +816,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // const savedData = {
-  //   personalInfo: {},
-  //   education: [],
-  //   experience: [],
-  //   languages: [],
-  //   certificates: [],
-  // };
 });
