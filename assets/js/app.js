@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(personalInfo);
   });
 
-
   const languages = [];
 
   addLanguageBtn.addEventListener("click", function () {
@@ -58,30 +57,32 @@ document.addEventListener("DOMContentLoaded", () => {
     languages.push(languageObj);
 
     console.log(languages);
-
   });
 
-  // document.body.classList.add("bg-gray-100");
+  const certificates = [];
 
-  // switchModeBtn.addEventListener("click", () => {
-  //   if (document.body.classList.contains("bg-gray-100")) {
-  //     document.body.classList.remove("bg-gray-100");
-  //     document.body.classList.add("bg-cyan-950");
-  //   } else {
-  //     document.body.classList.remove("bg-cyan-950");
-  //     document.body.classList.add("bg-gray-100");
-  //   }
-  // });
+  addCertificateBtn.addEventListener("click", function () {
+    const certNameInput = document.querySelector("input[name='cert_name[]']");
+    const certIssuerInput = document.querySelector(
+      "input[name='cert_issuer[]']"
+    );
+    const certDateInput = document.querySelector("input[name='cert_date[]']");
+    const certUrlInput = document.querySelector("input[name='cert_url[]']");
 
-  // addEducationBtn.addEventListener("click", (e) => {
-  //   e.preventDefault();
-  //   const formData = new FormData(educationDisplay);
-  //   // console.log(formData);
-  //   const entries = Object.fromEntries(formData);
-  //   const jsonData = JSON.stringify('educationDisplay',entries);
-  //   localStorage.setItem('educationDisplay', jsonData);
+    const certName = certNameInput.value.trim();
+    const certIssuer = certIssuerInput.value.trim();
+    const certDate = certDateInput.value;
+    const certUrl = certUrlInput.value.trim();
+    const certificate = {
+      name: certName,
+      issuer: certIssuer,
+      date: certDate,
+      url: certUrl || null,
+    };
+    certificates.push(certificate);
 
-  // });
+    console.log(certificates);
+  });
 
   const validationRules = {
     fullName: {
