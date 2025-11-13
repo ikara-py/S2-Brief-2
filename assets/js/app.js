@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const savePersonalInfoBtn = document.getElementById("savePersonalInfoBtn");
   const skillInput = document.getElementById("skillInput");
   const addSkillBtn = document.getElementById("addSkillBtn");
+  const addHobbiesBtn = document.getElementById("addHobbiesBtn");
+  const hobbiesInput = document.getElementById("hobbiesInput");
 
   let personalInfo = {};
 
@@ -118,13 +120,24 @@ document.addEventListener("DOMContentLoaded", () => {
   //______________________________________________________________________________
 
   const skills = [];
-  
+
   addSkillBtn.addEventListener("click", () => {
     const skill = skillInput.value.trim();
     if (!skill) return;
     skillInput.value = "";
     skills.push(skill);
     console.log(skills);
+  });
+  //______________________________________________________________________________
+
+  const hobbies = [];
+
+  addHobbiesBtn.addEventListener("click", () => {
+    const hobbie = hobbiesInput.value.trim();
+    if (!hobbie) return;
+    hobbiesInput.value = "";
+    hobbies.push(hobbie);
+    console.log(hobbies);
   });
 
   //_______________________________________________________________________________
