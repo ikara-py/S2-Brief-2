@@ -92,7 +92,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(languages);
     saveCvData();
+    updateCvLanguages()
   });
+
+  //______________________________________________________________________________
+
+function updateCvLanguages() {
+    const cvLanguagesDiv = document.getElementById("cvLanguages");
+    cvLanguagesDiv.innerHTML = ''; 
+
+    languages.forEach(langObj => {
+        const displayPara = document.createElement('p');
+        displayPara.className = 'text-gray-700';
+        displayPara.textContent = `${langObj.language} - ${langObj.level}`;
+        cvLanguagesDiv.appendChild(displayPara);
+    });
+}
+
 
   //______________________________________________________________________________
 
