@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("generateCvBtn");
   const progressFill = document.getElementById("progressFill");
   const steps = document.querySelectorAll(".step");
-  // const switchModeBtn = document.getElementById("switchModeBtn");
   const savePersonalInfoBtn = document.getElementById("savePersonalInfoBtn");
 
   let personalInfo = {};
@@ -30,6 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const phone = document.getElementById("phone").value.trim();
     const linkedin = document.getElementById("linkedin").value.trim();
 
+    if (!fullName || !email || !phone)
+      return;
+    
     personalInfo = {
       fullName,
       email,
@@ -39,6 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(personalInfo);
   });
+
+  //______________________________________________________________________________
+
 
   const languages = [];
 
@@ -54,10 +59,20 @@ document.addEventListener("DOMContentLoaded", () => {
       language: language,
       level: level,
     };
+
+
+    if (!langNameInput || !langLevelSelect)
+      return;
+
+
     languages.push(languageObj);
 
     console.log(languages);
   });
+
+
+  //______________________________________________________________________________
+
 
   const certificates = [];
 
@@ -79,10 +94,36 @@ document.addEventListener("DOMContentLoaded", () => {
       date: certDate,
       url: certUrl || null,
     };
+
+    if (!certNameInput || !certIssuerInput || !certDateInput)
+      return;
+
+
     certificates.push(certificate);
 
     console.log(certificates);
   });
+
+  //______________________________________________________________________________
+
+  const workExperiences = [];
+  const addBtn = document.getElementById("addExperienceBtn");
+  const expContainer = document.getElementById("experienceContainer");
+
+  addBtn.addEventListener("click", () => {
+    const block = expContainer.lastElementChild;
+    const jobTitle = block.querySelector("[name='exp_title[]']").value.trim();
+    const company = block.querySelector("[name='exp_company[]']").value.trim();
+
+    if (!jobTitle || !company)
+      return;
+
+    workExperiences.push({ jobTitle, company });
+
+    console.log(workExperiences);
+  });
+
+  //______________________________________________________________________________
 
   const validationRules = {
     fullName: {
