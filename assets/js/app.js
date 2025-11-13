@@ -44,10 +44,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(personalInfo);
     saveCvData();
-
+    updateCvDisplay();
   });
 
+  function updateCvDisplay() {
+    const cvFullName = document.getElementById("cvFullName");
+    const cvEmail = document.getElementById("cvEmail");
+    const cvPhone = document.getElementById("cvPhone");
+    const cvLinkedInContainer = document.getElementById("cvLinkedIn");
+    const cvLinkedInLink = cvLinkedInContainer.querySelector("a");
 
+    cvFullName.textContent = personalInfo.fullName;
+    cvEmail.textContent = personalInfo.email;
+    cvPhone.textContent = personalInfo.phone;
+
+    if (personalInfo.linkedin) {
+      cvLinkedInLink.textContent = personalInfo.linkedin;
+      cvLinkedInLink.href = personalInfo.linkedin;
+      cvLinkedInContainer.style.display = "block";
+    } else {
+      cvLinkedInLink.textContent = "";
+      cvLinkedInLink.href = "#";
+      cvLinkedInContainer.style.display = "none";
+    }
+  }
 
   //______________________________________________________________________________
 
@@ -135,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     skills.push(skill);
     console.log(skills);
     saveCvData();
+    updateCvSkills();
   });
 
   //______________________________________________________________________________
@@ -171,8 +192,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //_______________________________________________________________________________
 
-  
+  function updateCvSkills() {
+    const cvSkillsList = document.getElementById("cvSkills");
+    cvSkillsList.innerHTML = "";
 
+    skills.forEach((skill) => {
+      const skillItem = document.createElement("li");
+      skillItem.textContent = skill;
+      skillItem.className =
+        "bg-gray-200 text-gray-700 px-3 py-1 rounded shadow-sm";
+      cvSkillsList.appendChild(skillItem);
+    });
+  }
+
+  //_______________________________________________________________________________
   const validationRules = {
     fullName: {
       regex: /^[a-zA-Z\s]+$/,
