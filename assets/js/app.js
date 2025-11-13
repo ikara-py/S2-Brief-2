@@ -20,6 +20,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressFill = document.getElementById("progressFill");
   const steps = document.querySelectorAll(".step");
   // const switchModeBtn = document.getElementById("switchModeBtn");
+  const savePersonalInfoBtn = document.getElementById("savePersonalInfoBtn");
+
+  let personalInfo = {};
+
+  savePersonalInfoBtn.addEventListener("click", function () {
+    const fullName = document.getElementById("fullName").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const linkedin = document.getElementById("linkedin").value.trim();
+
+    personalInfo = {
+      fullName,
+      email,
+      phone,
+      linkedin,
+    };
+
+    console.log(personalInfo);
+  });
 
   // document.body.classList.add("bg-gray-100");
 
@@ -33,17 +52,15 @@ document.addEventListener("DOMContentLoaded", () => {
   //   }
   // });
 
+  // addEducationBtn.addEventListener("click", (e) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(educationDisplay);
+  //   // console.log(formData);
+  //   const entries = Object.fromEntries(formData);
+  //   const jsonData = JSON.stringify('educationDisplay',entries);
+  //   localStorage.setItem('educationDisplay', jsonData);
 
-
-  cvForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(cvForm);
-    // console.log(formData);
-    const entries = Object.fromEntries(formData);
-    const jsonData = JSON.stringify('cvForm',entries);
-    localStorage.setItem('cvForm', jsonData);
-    
-  });
+  // });
 
   const validationRules = {
     fullName: {
@@ -699,5 +716,5 @@ document.addEventListener("DOMContentLoaded", () => {
     experience: [],
     languages: [],
     certificates: [],
-  }
+  };
 });
